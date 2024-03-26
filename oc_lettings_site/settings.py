@@ -2,6 +2,8 @@ import os
 
 from pathlib import Path
 
+from django.contrib import staticfiles
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,6 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'lettings',
+    'profiles'
 ]
 
 MIDDLEWARE = [
