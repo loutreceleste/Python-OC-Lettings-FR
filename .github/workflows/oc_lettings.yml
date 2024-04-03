@@ -6,5 +6,5 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt install python3-pip;
-      - run: pip install -r requirements.txt
+      - run: pip freeze > requirements.txt
       - run: pytest
