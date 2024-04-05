@@ -1,10 +1,22 @@
 name: GitHub Actions Demo
-run-name: Pipeline is testing out GitHub Actions
-on: [push]
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
-      - run: sudo apt install python3-pip;
-      - run: pip freeze > requirements.txt
-      - run: pytest
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Python and dependencies
+        run: |
+          sudo apt update
+          sudo apt install python3-pip
+          pip3 install -r requirements.txt
+
+      - name: Run Pytest
+        run: pytest
