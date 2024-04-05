@@ -1,4 +1,4 @@
-name: GitHub Actions Demo
+name: GitHub Actions Integration
 
 on: [push]
 
@@ -17,3 +17,8 @@ jobs:
 
       - name: Run Pytest
         run: pytest
+
+      - name: Static Application Security Testing (SAST)
+        run: |
+          pip3 install bandit
+          bandit -r .
