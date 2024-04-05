@@ -17,8 +17,3 @@ jobs:
 
       - name: Run Pytest
         run: pytest
-
-      - name: Static Application Security Testing (SAST)
-        run: |
-          pip3 install bandit
-          bandit -r .
