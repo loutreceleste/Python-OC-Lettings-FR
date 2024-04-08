@@ -43,7 +43,7 @@ jobs:
           cd $(git rev-parse --show-toplevel) && COMMIT_HASH=$(git rev-parse HEAD)
           docker build -t python-oc-lettings-fr:$COMMIT_HASH -f Dockerfile .
           aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 211125791987.dkr.ecr.eu-west-3.amazonaws.com
-          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$COMMIT_HASH
+          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/python-oc-lettings-fr:$COMMIT_HASH
           
       - name: Update ECS Task Definition
         run: |
