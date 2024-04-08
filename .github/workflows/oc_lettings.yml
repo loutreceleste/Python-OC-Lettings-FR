@@ -44,7 +44,7 @@ jobs:
           docker build -t python-oc-lettings-fr:$COMMIT_HASH -f Dockerfile .
           aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 211125791987.dkr.ecr.eu-west-3.amazonaws.com
           docker tag python-oc-lettings-fr:$COMMIT_HASH python-oc-lettings-fr:aws
-          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/python-oc-lettings-fr:$COMMIT_HASH
+          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/python-oc-lettings-fr:aws
           
       - name: Update ECS Task Definition
         run: |
