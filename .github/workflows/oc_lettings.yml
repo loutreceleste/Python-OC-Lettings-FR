@@ -45,7 +45,7 @@ jobs:
 
       - name: Build and push Docker image to ECR
         run: |
-          docker build -t python-oc-lettings-fr:${{ env.CUSTOM_TAG }} -f /home/edward/Documents/Repos/OpenClassRooms/Python-OC-Lettings-FR/Dockerfile .
+          docker build -t python_oc_lettings_fr:${{env.CUSTOM_TAG}} -f /home/edward/Documents/Repos/OpenClassRooms/Python-OC-Lettings-FR/Dockerfile .
           aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 211125791987.dkr.ecr.eu-west-3.amazonaws.com
           docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:${{ env.CUSTOM_TAG }}
           
