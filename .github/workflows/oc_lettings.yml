@@ -17,6 +17,15 @@ jobs:
           pip3 install -r requirements.txt
           pip3 install pytest pytest-cov
 
+      - name: Get latest commit hash
+        id: git_hash
+        run: |
+          echo "::set-output name=hash::$(git log -1 --format='%H')"
+
+      - name: Set CUSTOM_TAG
+        run: |
+          echo "CUSTOM_TAG=$(echo ${{ steps.git_hash.outputs.hash }})" >> $GITHUB_ENV
+
       - name: Run Tests whit Coverage
         run: pytest
 
@@ -28,7 +37,7 @@ jobs:
     needs: build_and_tests
 
     env:
-      CUSTOM_TAG: ${{ 'git log -1 --format="%H"' }}
+      CUSTOM_TAG: ${{ env.CUSTOM_TAG }}
 
     steps:
       - name: Set up AWS credentials
