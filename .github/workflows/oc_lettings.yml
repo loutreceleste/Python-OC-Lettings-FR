@@ -36,8 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_tests
 
-    env:
-      CUSTOM_TAG: ${{ env.CUSTOM_TAG }}
 
     steps:
       - name: Set up AWS credentials
