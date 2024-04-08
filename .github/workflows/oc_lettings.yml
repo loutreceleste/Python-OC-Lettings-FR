@@ -19,7 +19,7 @@ jobs:
 
       - name: Get commit hash
         id: commit_hash
-        run: echo "::set-output name=hash::$(git rev-parse HEAD)"
+        run: git rev-parse --short HEAD
 
       - name: Set CUSTOM_TAG
         run: echo "CUSTOM_TAG=${{ steps.commit_hash.outputs.hash }}" >> $GITHUB_ENV
