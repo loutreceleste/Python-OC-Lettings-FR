@@ -17,13 +17,6 @@ jobs:
           pip3 install -r requirements.txt
           pip3 install pytest pytest-cov
 
-      - name: Get commit hash
-        id: commit_hash
-        run: git rev-parse --short HEAD
-
-      - name: Set CUSTOM_TAG
-        run: echo "CUSTOM_TAG=${{ steps.commit_hash.outputs.hash }}" >> $GITHUB_ENV
-
       - name: Run Tests whit Coverage
         run: pytest
 
@@ -45,13 +38,14 @@ jobs:
 
       - name: Build and push Docker image to ECR
         run: |
-          docker build -t lettings:${{env.CUSTOM_TAG}} -f /home/edward/Documents/Repos/OpenClassRooms/Python-OC-Lettings-FR/Dockerfile .
+          COMMIT_HASH=$(git rev-parse HEAD)
+          docker build -t python-oc-lettings-fr:$COMMIT_HASH -f /home/edward/Documents/Repos/OpenClassRooms/Python-OC-Lettings-FR/Dockerfile .
           aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 211125791987.dkr.ecr.eu-west-3.amazonaws.com
-          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:${{ env.CUSTOM_TAG }}
+          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$COMMIT_HASH
           
       - name: Update ECS Task Definition
         run: |
           task_definition=$(aws ecs describe-task-definition --task-definition lettings-oc-docker --query 'taskDefinition' --output json)
           echo $task_definition > task_definition.json
-          sed -i "s|\"image\": \".*\"|\"image\": \"211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$CUSTOM_TAG\"|" task_definition.json
+          sed -i "s|\"image\": \".*\"|\"image\": \"211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$COMMIT_HASH\"|" task_definition.json
           new_task_definition=$(aws ecs register-task-definition --cli-input-json file://task_definition.json --query 'taskDefinition.taskDefinitionArn' --output json)
