@@ -36,9 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_tests
 
-    env:
-      CUSTOM_TAG: ${{ env.CUSTOM_TAG }}
-
     steps:
       - name: Set up AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -49,13 +46,14 @@ jobs:
 
       - name: Build and push Docker image to ECR
         run: |
-          docker build -t python-oc-lettings-fr:${{ env.CUSTOM_TAG }} -f /home/edward/Documents/Repos/OpenClassRooms/Python-OC-Lettings-FR/Dockerfile .
+          tag=$(echo $CUSTOM_TAG)
+          docker build -t python-oc-lettings-fr:$tag -f /home/edward/Documents/Repos/OpenClassRooms/Python-OC-Lettings-FR/Dockerfile .
           aws ecr get-login-password --region eu-west-3 | docker login --username AWS --password-stdin 211125791987.dkr.ecr.eu-west-3.amazonaws.com
-          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:${{ env.CUSTOM_TAG }}
+          docker push 211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$tag
           
       - name: Update ECS Task Definition
         run: |
           task_definition=$(aws ecs describe-task-definition --task-definition lettings-oc-docker --query 'taskDefinition' --output json)
           echo $task_definition > task_definition.json
-          sed -i "s|\"image\": \".*\"|\"image\": \"211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$CUSTOM_TAG\"|" task_definition.json
+          sed -i "s|\"image\": \".*\"|\"image\": \"211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$tag\"|" task_definition.json
           new_task_definition=$(aws ecs register-task-definition --cli-input-json file://task_definition.json --query 'taskDefinition.taskDefinitionArn' --output json)
