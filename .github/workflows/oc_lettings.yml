@@ -17,14 +17,12 @@ jobs:
           pip3 install -r requirements.txt
           pip3 install pytest pytest-cov
 
-      - name: Get latest commit hash
-        id: git_hash
-        run: |
-          echo "::set-output name=hash::$(git log -1 --format='%H')"
+      - name: Get commit hash
+        id: commit_hash
+        run: echo "::set-output name=hash::$(git rev-parse HEAD)"
 
       - name: Set CUSTOM_TAG
-        run: |
-          echo "CUSTOM_TAG=$(echo ${{ steps.git_hash.outputs.hash }})" >> $GITHUB_ENV
+        run: echo "CUSTOM_TAG=${{ steps.commit_hash.outputs.hash }}" >> $GITHUB_ENV
 
       - name: Run Tests whit Coverage
         run: pytest
