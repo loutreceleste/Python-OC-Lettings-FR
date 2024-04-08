@@ -28,7 +28,7 @@ jobs:
     needs: build_and_tests
 
     env:
-      CUSTOM_TAG: ${{ shell  'git log -1 --format="%H"' }}
+      CUSTOM_TAG: ${{ 'git log -1 --format="%H"' }}
 
     steps:
       - name: Set up AWS credentials
