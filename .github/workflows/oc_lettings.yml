@@ -48,7 +48,8 @@ jobs:
           
       - name: Update ECS Task Definition
         run: |
-          task_definition=$(aws ecs describe-task-definition --task-definition lettings-oc-docker --query 'taskDefinition' --output json)
-          echo $task_definition > task_definition.json
-          sed -i "s|\"image\": \".*\"|\"image\": \"211125791987.dkr.ecr.eu-west-3.amazonaws.com/oc-lettings-fr:$COMMIT_HASH\"|" task_definition.json
-          new_task_definition=$(aws ecs register-task-definition --cli-input-json file://task_definition.json --query 'taskDefinition.taskDefinitionArn' --output json)
+          TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition lettings-oc-docker --region eu-west-3)
+          NEW_TASK_DEFINITION=$(echo lettings-oc-docker | jq --arg IMAGE python-oc-lettings-fr:$COMMIT_HASH '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) |  del(.registeredAt)  | del(.registeredBy)')
+          NEW_TASK_INFO=$(aws ecs register-task-definition --region eu-west-3 --cli-input-json lettings-oc-docker)
+          NEW_REVISION=$(echo $NEW_TASK_INFO | jq '.taskDefinition.revision')
+          aws ecs update-service --cluster lettings-fr --task-definition lettings-oc-docker:lettings-oc-docker
