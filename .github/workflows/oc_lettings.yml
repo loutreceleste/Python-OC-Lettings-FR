@@ -49,7 +49,7 @@ jobs:
       - name: Update ECS Task Definition
         run: |
           TASK_DEFINITION=$(aws ecs describe-task-definition --task-definition lettings-oc-docker --region eu-west-3)
-          NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "python-oc-lettings-fr:$COMMIT_HASH" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) |  del(.registeredAt)  | del(.registeredBy)')
+          NEW_TASK_DEFINITION=$(echo "$TASK_DEFINITION" | jq --arg IMAGE "python-oc-lettings-fr:$COMMIT_HASH" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities) |  del(.registeredAt) | del(.registeredBy)')
           NEW_TASK_INFO=$(aws ecs register-task-definition --region eu-west-3 --cli-input-json "$NEW_TASK_DEFINITION")
           NEW_REVISION=$(echo $NEW_TASK_INFO | jq '.taskDefinition.revision')
           aws ecs update-service --cluster lettings-fr --service python-oc-lettings-fr --task-definition lettings-oc-docker:$NEW_REVISION
