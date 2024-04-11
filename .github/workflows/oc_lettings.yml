@@ -4,15 +4,11 @@ on:
   push:
     branches:
       - '**'
-  pull_request:
-    types: [closed]
-    branches:
-      - master
 
 jobs:
   compilations_and_tests:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -33,7 +29,7 @@ jobs:
 
   containerization_and_push:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: compilations_and_tests
 
     steps:
@@ -76,7 +72,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: containerization_and_push
 
     steps:
