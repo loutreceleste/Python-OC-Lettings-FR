@@ -33,7 +33,7 @@ jobs:
 
   containerization_and_push:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     needs: compilations_and_tests
 
     steps:
@@ -76,7 +76,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'master'
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     needs: containerization_and_push
 
     steps:
