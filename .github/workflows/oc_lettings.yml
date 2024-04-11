@@ -51,7 +51,7 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           cd $(git rev-parse --show-toplevel) && COMMIT_HASH=$(git rev-parse --short HEAD)
-          aws ecr-public get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URL_REPOSITORY
+          aws ecr-public get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URL_REPOSITORY --no-include-email
           docker tag python-oc-lettings-fr:$COMMIT_HASH $ECR_URL_REPOSITORY:$COMMIT_HASH
           docker push $ECR_URL_REPOSITORY:$COMMIT_HASH
         env:
