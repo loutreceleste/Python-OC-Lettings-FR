@@ -97,8 +97,11 @@ Pour que le déploiement fonctionne correctement, vous devez disposer des élém
 2. Un compte Docker Hub pour stocker les images Docker.
 3. Les secrets GitHub :
 - AWS_ACCESS_KEY_ID : votre clé d'accès AWS.
-- AWS_SECRET_ACCESS_KEY : votre clé secrète AWS.
+- AWS_SECRET_ACCESS_KEY : votre clé secrète AWS. 
+- ECR_URL_REPOSITORY: l'url' de votre repository sur ECR.
+- AWS_REGION: la region associé a votre compte AWS.
 - DOCKERHUB_PASSWORD : le mot de passe de votre compte Docker Hub.
+- DOCKERHUB_USERNAME : l'identifiant de votre compte Docker Hub.
 4. Un cluster Amazon ECS avec un service comprenant la définition de tâche lettings-oc-docker.
 
 #### Étapes de déploiement
@@ -106,6 +109,17 @@ Pour que le déploiement fonctionne correctement, vous devez disposer des élém
 1. Assurez-vous davoir la configuration requise.
 2. Créez une nouvelle branche à partir de la branche main.
 3. Apportez les modifications souhaitées au code et validez-les dans votre nouvelle branche.
-4. Créez une pull request à partir de votre branche vers la branche main.
+4. Créez une pull request à partir de votre branche vers la branche master.
 5. Attendez que les GitHub Actions se terminent et vérifiez que le déploiement a réussi.
 6. Une fois le déploiement réussi, vous pouvez fusionner la pull request dans la branche main.
+
+#### Commande unique de déploiement
+Pour déployer votre site en une seule commande, suivez les étapes suivantes :
+
+1. Assurez-vous de vous trouver dans le dossier racine du projet.
+2. Assurez-vous de posséder un compte Docker Hub.
+3. Tapez la commande suivante dans le terminal : `./deploy.sh`
+
+Cette commande construira une image Docker de votre site avec le tag du hash du commit actuel, la poussera vers votre compte Docker Hub et la tirera localement pour que vous puissiez exécuter le site en utilisant l'image Docker.
+
+Vous disposez maintenant dans votre Docker Hub et localement de l'image de votre site actuel.
