@@ -51,7 +51,7 @@ jobs:
       - name: Push Docker image to ECR
         run: |
           cd $(git rev-parse --show-toplevel) && COMMIT_HASH=$(git rev-parse --short HEAD)
-          aws ecr-public get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_URL_REPOSITORY
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_URL_REPOSITORY
           docker tag python-oc-lettings-fr:$COMMIT_HASH $ECR_URL_REPOSITORY:$COMMIT_HASH
           docker push $ECR_URL_REPOSITORY:$COMMIT_HASH
         env:
@@ -64,11 +64,9 @@ jobs:
           echo "$DOCKERHUB_PASSWORD" | docker login -u $DOCKERHUB_USERNAME --password-stdin
           docker tag python-oc-lettings-fr:$COMMIT_HASH $DOCKERHUB_USERNAME/python-oc-lettings-fr:$COMMIT_HASH
           docker push $DOCKERHUB_USERNAME/python-oc-lettings-fr:$COMMIT_HASH
-          docker pull $DOCKERHUB_USERNAME/python-oc-lettings-fr:$COMMIT_HASH
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
-
 
   build:
     runs-on: ubuntu-latest
