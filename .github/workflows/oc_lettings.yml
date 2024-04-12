@@ -8,7 +8,7 @@ on:
 jobs:
   compilations_and_tests:
     runs-on: ubuntu-latest
-
+    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -29,7 +29,7 @@ jobs:
 
   containerization_and_push:
     runs-on: ubuntu-latest
-
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: compilations_and_tests
 
     steps:
@@ -64,15 +64,13 @@ jobs:
           echo "$DOCKERHUB_PASSWORD" | docker login -u $DOCKERHUB_USERNAME --password-stdin
           docker tag python-oc-lettings-fr:$COMMIT_HASH $DOCKERHUB_USERNAME/python-oc-lettings-fr:$COMMIT_HASH
           docker push $DOCKERHUB_USERNAME/python-oc-lettings-fr:$COMMIT_HASH
-          docker pull $DOCKERHUB_USERNAME/python-oc-lettings-fr:$COMMIT_HASH
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-
   build:
     runs-on: ubuntu-latest
-
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: containerization_and_push
 
     steps:
