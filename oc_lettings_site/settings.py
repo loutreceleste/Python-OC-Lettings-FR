@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 
 from pathlib import Path
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -123,7 +122,7 @@ load_dotenv()
 
 sentry_sdk.init(
 
-    dsn=os.getenv('SENTRY_DNS'),
+    dsn=os.getenv('SENTRY_DSN'),
     traces_sample_rate=1.0,
     profiles_sample_rate=1.0,
 )
