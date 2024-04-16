@@ -83,40 +83,52 @@
   <section id="description-of-the-database-structure-and-data-models">
 <h1>Description of the database structure and data models.<a class="headerlink" href="#description-of-the-database-structure-and-data-models" title="Link to this heading"></a></h1>
 <p>This project uses the SQLite3 database to maintain a flexible and adaptive structure without excessive constraints. The database is structured with four distinct tables: letting, address, profile, and user.</p>
-<p><strong>letting :</strong>
-- id
-- title
-- address_id (linked to the address table)</p>
-<p><strong>address :</strong>
-- id
-- number
-- street
-- city
-- state
-- zip_code
-- country_iso_code</p>
-<p><strong>profile :</strong>
-- id
-- favorite_city
-- user_id (linked to the user table)</p>
-<p><strong>user :</strong>
-- id
-- last_name
-- date_joined
-- is_active
-- is_staff
-- email
-- first_name
-- username
-- is_superuser
-- last_login
-- password</p>
+<p><strong>letting :</strong></p>
+<ul class="simple">
+<li><p>id (integrer (auto increment))</p></li>
+<li><p>title (varchar(256))</p></li>
+<li><p>address_id (linked to the address table) (integrer)</p></li>
+</ul>
+<p><strong>address :</strong></p>
+<ul class="simple">
+<li><p>id (integrer (auto increment))</p></li>
+<li><p>number (integrer unsigned)</p></li>
+<li><p>street (varchar(64))</p></li>
+<li><p>city (varchar(64))</p></li>
+<li><p>state (varchar(2))</p></li>
+<li><p>zip_code (integrer unsigned)</p></li>
+<li><p>country_iso_code (varchar(3))</p></li>
+</ul>
+<p><strong>profile :</strong></p>
+<ul class="simple">
+<li><p>id (integrer (auto increment))</p></li>
+<li><p>favorite_city (varchar(64))</p></li>
+<li><p>user_id (linked to the user table) (integrer)</p></li>
+</ul>
+<p><strong>user :</strong></p>
+<ul class="simple">
+<li><p>id (integrer (auto increment))</p></li>
+<li><p>password (varchar(128))</p></li>
+<li><p>last_login (datetime)</p></li>
+<li><p>is_superuser (bool)</p></li>
+<li><p>username (varchar(150))</p></li>
+<li><p>first_name (varchar(30))</p></li>
+<li><p>email (varchar(254))</p></li>
+<li><p>is_staff (bool)</p></li>
+<li><p>is_active (bool)</p></li>
+<li><p>date_joined (datetime)</p></li>
+<li><p>last_name (varchar(150))</p></li>
+</ul>
 <p>These four tables are grouped into two models (with the user model managed by Django’s authentication) as follows:</p>
-<p><strong>Lettings :</strong>
-- letting
-- address</p>
-<p><strong>Profiles :</strong>
-- profile</p>
+<p><strong>Lettings :</strong></p>
+<ul class="simple">
+<li><p>letting</p></li>
+<li><p>address</p></li>
+</ul>
+<p><strong>Profiles :</strong></p>
+<ul class="simple">
+<li><p>profile</p></li>
+</ul>
 <p>Using these models, the application effectively handles and organizes rental and user data, streamlining information retrieval and manipulation.</p>
 </section>
 
