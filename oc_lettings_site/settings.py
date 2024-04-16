@@ -10,7 +10,7 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Chargement de la clé secrète à partir des variables d'environnement
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # Initialisation de Sentry avec le DSN chargé à partir des variables d'environnement
 SENTRY_DSN = os.getenv('SENTRY_DSN')
