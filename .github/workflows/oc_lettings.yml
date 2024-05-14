@@ -21,6 +21,14 @@ jobs:
           pip3 install -r requirements.txt
           pip3 install pytest pytest-cov
 
+      - name: Set up environment variables
+        env:
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+        run: |
+          echo "SECRET_KEY=$SECRET_KEY" >> $GITHUB_ENV
+          echo "SENTRY_DSN=$SENTRY_DSN" >> $GITHUB_ENV
+
       - name: Run Tests whit Coverage
         run: pytest
 

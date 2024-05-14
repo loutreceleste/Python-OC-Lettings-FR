@@ -1,20 +1,24 @@
 import os
-
+import sentry_sdk
+from dotenv import load_dotenv
 from pathlib import Path
 
+# Charger les variables d'environnement à partir d'un fichier .env
+load_dotenv()
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# Chemin absolu vers le répertoire parent du fichier courant
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Chargement de la clé secrète à partir des variables d'environnement
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+# Initialisation de Sentry avec le DSN chargé à partir des variables d'environnement
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+sentry_sdk.init(dsn=SENTRY_DSN, traces_sample_rate=1.0, profiles_sample_rate=1.0)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fp$9^593hsriajg$_%=5trot9g!1qa@ew(o-1#@=&4%=hp46(s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
