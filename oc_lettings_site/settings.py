@@ -1,6 +1,5 @@
 import os
 import sentry_sdk
-from django.contrib import staticfiles
 from dotenv import load_dotenv
 from pathlib import Path
 
